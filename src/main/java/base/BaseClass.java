@@ -16,6 +16,10 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.safari.SafariDriver;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Parameters;
+
 import com.google.common.io.Files;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import pages.boat.AddresePage;
@@ -28,13 +32,15 @@ import static utils.IConstant.*;
 public class BaseClass {
 Configuration config=  new Configuration();
 	WebDriver driver;
-	protected HomePage homePage;
-	protected AboutYou aboutYou;
-	protected AddresePage addresePage;
+	public static HomePage homePage;
+	public static AboutYou aboutYou;
+	public static AddresePage addresePage;
 	
+	@Parameters(BROWSER)
+	@BeforeMethod
 	public void setUpDriver() {
 		//system.setProperty("webdriver.driver.chrome","/location/to/the/chrome/driver.exe");
-		initDriver();
+		initDriver(config.getProperty(BROWSER));
 		driver.manage().window().maximize();
 		driver.get(config.getProperty((URL)));
 		long pageLoadTime =Long.parseLong(config.getProperty(PAGELOAD_WAIT)) ;
@@ -44,7 +50,7 @@ Configuration config=  new Configuration();
 		initClasses();
 		}
 	
-	private void initDriver () {
+	private void initDriver (String browser) {
 		String browserName = config.getProperty(BROWSER);
 		switch (browserName) {
 		case CHROME:
@@ -71,7 +77,7 @@ Configuration config=  new Configuration();
 		
 	}
 	
-	private void initClasses() {
+	public void initClasses() {
 		homePage = new HomePage(driver);
 		aboutYou = new AboutYou(driver);
 		addresePage = new AddresePage(driver);
@@ -80,13 +86,13 @@ Configuration config=  new Configuration();
 	public WebDriver getDriver() {
 		return driver;
 	}
-	
+	@AfterMethod
 public void closingDriverSession() {
 	getDriver().quit();
 }
 
 public String takeScreenShot(String testName) {
-	Date date = new Date();
+	Date date = new Date(0);
 	SimpleDateFormat format = new SimpleDateFormat("_MMddyyyy_hhmmss");
 	File localFile = new File("test-output/screenShots/" + testName + format.format(date) +".png");
 	TakesScreenshot ss = (TakesScreenshot) driver;
