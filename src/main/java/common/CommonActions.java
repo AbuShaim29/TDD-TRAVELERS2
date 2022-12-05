@@ -75,6 +75,15 @@ public static void assertGetText(WebElement element, String expected) {
 	}
 	
 }
+
+public static void sleep(int secs) {
+	try {
+		Thread.sleep(secs);
+	} catch (InterruptedException e) {
+		e.printStackTrace();
+	}
+}
+
 public static void selectDropdown(WebElement element,String value) {
 	try {
 		Select select = new Select(element);

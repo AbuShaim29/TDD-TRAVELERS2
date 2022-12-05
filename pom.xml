@@ -1,10 +1,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>tdd.travelers</groupId>
-	<artifactId>tdd.travelers</artifactId>
+	<groupId>tdd.walmart</groupId>
+	<artifactId>tdd.walmart</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>Travelers TDD</name>
-	<description>This is Travelers TDD project</description>
+	<name>Walmart TDD</name>
+	<description>This is Walmart TDD project</description>
 	<properties>
 	<javaVersion>1.8</javaVersion>
 	</properties>
