@@ -17,22 +17,23 @@ public class HomeTest extends BaseClass {
 		Logs.log("This is priority 0");
 	}
 
-	@Test(enabled = false,groups = { "Auto", "nopriority" })
+	@Test(enabled = false, groups = { "Auto", "nopriority" })
 	public void AutoQuote3() {
 		Logs.log("No priority 3");
 	}
 
-	@Test(groups = { "Auto", "priority" }, dependsOnGroups = "Auto", alwaysRun = true,retryAnalyzer = RetryClass.class)
+	@Test(groups = { "Auto", "priority" }, dependsOnGroups = "Auto", alwaysRun = true, retryAnalyzer = RetryClass.class)
 	public void AutoQuote4() {
 		Logs.log("No priority 4");
-		//Assert.fail();
+		// Assert.fail();
 	}
 
-	@Test(groups = "Auto",dependsOnGroups = "Auto",alwaysRun = true)
+	@Test(groups = "Auto", dependsOnGroups = "Auto", alwaysRun = true)
 	public void aAutoTest() {
 		Logs.log("No priority 5");
 	}
-	@Test(groups = "Auto",dependsOnGroups = "AutoQuote3",ignoreMissingDependencies =true )
+
+	@Test(groups = "Auto", dependsOnGroups = "AutoQuote3", ignoreMissingDependencies = true)
 	public void AutoQuote6() {
 		Logs.log("No priority6");
 	}
@@ -41,5 +42,5 @@ public class HomeTest extends BaseClass {
 	public void bAutoTest() {
 		Logs.log("This is priority 100");
 	}
-	
+
 }

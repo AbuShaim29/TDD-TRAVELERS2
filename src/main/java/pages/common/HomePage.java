@@ -30,7 +30,7 @@ public class HomePage {
 
 	@FindBy(id = "lbl-0-2")
 	WebElement homeElement;
-	
+
 	@FindBy(id = "lbl-0-7")
 	WebElement boatElement;
 
@@ -47,25 +47,25 @@ public class HomePage {
 	// driver.findElement(by.xpath("(//label[@id='lbl-0-1']"))
 
 	public void autoSteps(String zip) {
-	input(zipElement, zip); 
-	click(productElement);
-	click(homeElement);
-	click(startMyQuoteElement);
-	click(noElement);
+		input(zipElement, zip);
+		click(productElement);
+		click(homeElement);
+		click(startMyQuoteElement);
+		click(noElement);
 //	waits.waitUntilVisible(continueQuote);
 //	if (isPresent(continueQuote)) {
 //		if (isDisplayed(continueQuote)) {
 //			click(continueQuote);
 //		}
 //		}	
-	try {
-		
-	} catch (Exception e) {
-		((JavascriptExecutor) driver).executeScript("document.getElementById('continueQuote').click();");
+		try {
+
+		} catch (Exception e) {
+			((JavascriptExecutor) driver).executeScript("document.getElementById('continueQuote').click();");
+		}
+		// click(continueQuote);
 	}
-		//click(continueQuote);
-	}
-	
+
 	public void boatsteps(String zip) {
 		input(zipElement, zip);
 		click(productElement);
@@ -73,13 +73,13 @@ public class HomePage {
 		waits.waitUntilClickable(startMyQuoteElement);
 		click(startMyQuoteElement);
 	}
-	
+
 	public void autoSteps(AutoData autoData) {
-		input(zipElement, autoData.getZip()); 
+		input(zipElement, autoData.getZip());
 		click(productElement);
 		click(homeElement);
 		click(startMyQuoteElement);
 		click(noElement);
-			
+
 	}
 }
