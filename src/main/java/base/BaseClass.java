@@ -39,71 +39,67 @@ import reporting.ExtentTestManager;
 import reporting.Logs;
 import utils.Configuration;
 
-
 public class BaseClass {
-Configuration config=  new Configuration();
+	Configuration config = new Configuration();
 	WebDriver driver;
 	ExtentReports extent;
-	
-     protected HomePage homePage;
+
+	protected HomePage homePage;
 	protected AboutYou aboutYou;
 	protected AddresePage addresePage;
-	
+
 	@BeforeSuite
 	public void initiatinExtentReport() {
 		extent = ExtentManager.getInstance();
 	}
-	
-	
+
 	@Parameters(BROWSER)
 	@BeforeMethod
 	public void setUpDriver(String browser) {
-		//system.setProperty("webdriver.driver.chrome","/location/to/the/chrome/driver.exe");
+		// system.setProperty("webdriver.driver.chrome","/location/to/the/chrome/driver.exe");
 		initDriver(browser);
 		driver.manage().window().maximize();
 		driver.get(config.getProperty((URL)));
-		long pageLoadTime =Long.parseLong(config.getProperty(PAGELOAD_WAIT)) ;
+		long pageLoadTime = Long.parseLong(config.getProperty(PAGELOAD_WAIT));
 		long implicitWait = Long.parseLong(config.getProperty(IMPLICIT_WAIT));
 		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(pageLoadTime));
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(implicitWait));
 		initClasses();
-		}
-	
+	}
+
 	@BeforeMethod
 	public void beforeEachTest(Method method) {
 		String className = method.getDeclaringClass().getSimpleName();
 		ExtentTestManager.startTest(method.getName());
 		ExtentTestManager.getTest().assignCategory(className);
 	}
-	
+
 	@AfterMethod
 	public void afterEachTest(ITestResult result) {
-		for(String testName : result.getMethod().getGroups()) {
+		for (String testName : result.getMethod().getGroups()) {
 			ExtentTestManager.getTest().assignCategory(testName);
 		}
-		if(result.getStatus() == ITestResult.SUCCESS) {
+		if (result.getStatus() == ITestResult.SUCCESS) {
 			ExtentTestManager.getTest().log(Status.PASS, "Test Passed");
-		}else if(result.getStatus() == ITestResult.FAILURE) {
+		} else if (result.getStatus() == ITestResult.FAILURE) {
 			ExtentTestManager.getTest().log(Status.FAIL, "Test Failed");
 			ExtentTestManager.getTest().log(Status.FAIL, result.getThrowable());
 			ExtentTestManager.getTest().addScreenCaptureFromPath(takeScreenShot(result.getName()));
-		}else {
+		} else {
 			ExtentTestManager.getTest().log(Status.SKIP, "Test Skipped");
 		}
 	}
-	
-	
-	private void initDriver (String browser) {
-		String browserName = config.getProperty(BROWSER);
-		switch (browserName) {
+
+	private void initDriver(String browser) {
+		switch (browser) {
 		case CHROME:
 			WebDriverManager.chromedriver().setup();
-			driver = new ChromeDriver(); 
+			driver = new ChromeDriver();
 			break;
 		case FIREFOX:
-        WebDriverManager.firefoxdriver().setup();
-        driver = new FirefoxDriver();
-        break; 
+			WebDriverManager.firefoxdriver().setup();
+			driver = new FirefoxDriver();
+			break;
 		case EDGE:
 			WebDriverManager.edgedriver().setup();
 			driver = new EdgeDriver();
@@ -117,42 +113,42 @@ Configuration config=  new Configuration();
 			driver = new ChromeDriver();
 			break;
 		}
-		
+
 	}
-	
+
 	public void initClasses() {
 		homePage = new HomePage(driver);
 		aboutYou = new AboutYou(driver);
 		addresePage = new AddresePage(driver);
 	}
-	
+
 	public WebDriver getDriver() {
 		return driver;
 	}
+
 	@AfterMethod
-public void closingDriverSession() {
-	getDriver().quit();
-}
-	
+	public void closingDriverSession() {
+		getDriver().quit();
+	}
+
 	@AfterSuite
 	public void closeReport() {
 		extent.flush();
 	}
 
-public String takeScreenShot(String testName) {
-	Date date = new Date(0);
-	SimpleDateFormat format = new SimpleDateFormat("_MMddyyyy_hhmmss");
-	File localFile = new File("test-output/screenShots/" + testName + format.format(date) +".png");
-	TakesScreenshot ss = (TakesScreenshot) driver;
-	File driverSS = ss.getScreenshotAs(OutputType.FILE);
-	try {
-		Files.copy(driverSS, localFile);
-		Logs.log("Screen Shot captured at \n" + localFile.getAbsolutePath());
-	}catch (IOException e) {
-		Logs.log("Error occurs during taking ScreenShot..!");
+	public String takeScreenShot(String testName) {
+		Date date = new Date(0);
+		SimpleDateFormat format = new SimpleDateFormat("_MMddyyyy_hhmmss");
+		File localFile = new File("test-output/screenShots/" + testName + format.format(date) + ".png");
+		TakesScreenshot ss = (TakesScreenshot) driver;
+		File driverSS = ss.getScreenshotAs(OutputType.FILE);
+		try {
+			Files.copy(driverSS, localFile);
+			Logs.log("Screen Shot captured at \n" + localFile.getAbsolutePath());
+		} catch (IOException e) {
+			Logs.log("Error occurs during taking ScreenShot..!");
+		}
+		return localFile.getAbsolutePath();
 	}
-	return localFile.getAbsolutePath();
-}
-
 
 }
